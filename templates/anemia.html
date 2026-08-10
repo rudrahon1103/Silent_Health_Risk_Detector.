@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Anemia Prediction | Silent Health AI</title>
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet">
+
+<!-- Main CSS -->
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}">
+
+<style>
+
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    /* =========================
+       ANEMIA CONTAINER
+    ========================= */
+
+    .anemia-container {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px 60px;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .anemia-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .anemia-header h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+    .anemia-header p {
+        color: #666;
+        max-width: 750px;
+        margin: auto;
+        line-height: 1.6;
+    }
+
+    /* =========================
+       FORM SECTION
+    ========================= */
+
+    .form-section {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-section h2 {
+        margin-bottom: 8px;
+        font-size: 22px;
+    }
+
+    .section-description {
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        margin-bottom: 7px;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d5d5d5;
+        border-radius: 8px;
+        font-size: 15px;
+        outline: none;
+        box-sizing: border-box;
+        font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        border-color: #6c63ff;
+        box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.1);
+    }
+
+    /* =========================
+       PREDICT BUTTON
+    ========================= */
+
+    .predict-area {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .predict-btn {
+        border: none;
+        padding: 15px 42px;
+        border-radius: 10px;
+        font-size: 17px;
+        font-weight: 600;
+        cursor: pointer;
+        background: #6c63ff;
+        color: white;
+        font-family: inherit;
+        transition: 0.2s;
+    }
+
+    .predict-btn:hover {
+        transform: translateY(-2px);
+        opacity: 0.92;
+    }
+
+    /* =========================
+       RESULT BOX
+    ========================= */
+
+    .result-box {
+        margin: 30px auto 0;
+        padding: 25px;
+        max-width: 650px;
+        border-radius: 16px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    .result-box.high-risk {
+        background: #fff4f4;
+        border-color: #ffb3b3;
+    }
+
+    .result-box.low-risk {
+        background: #f2fff6;
+        border-color: #a8e6bc;
+    }
+
+    .result-icon {
+        font-size: 40px;
+        margin-bottom: 8px;
+    }
+
+    .result-box h3 {
+        margin: 5px 0 12px;
+        font-size: 20px;
+    }
+
+    .result-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .result-box p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    /* =========================
+       DISCLAIMER
+    ========================= */
+
+    .disclaimer {
+        max-width: 900px;
+        margin: 10px auto 40px;
+        padding: 0 20px;
+        text-align: center;
+        color: #777;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .anemia-header h1 {
+            font-size: 28px;
+        }
+
+        .form-section {
+            padding: 18px;
+        }
+
+        .predict-btn {
+            width: 100%;
+        }
+
+    }
+
+</style>
+```
+
+</head>
+
+<body>
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+```
+<div class="logo">
+    🩺 Silent Health AI
+</div>
+
+<ul>
+
+    <li>
+        <a href="/">Home</a>
+    </li>
+
+    <li>
+        <a href="/dashboard">Dashboard</a>
+    </li>
+
+</ul>
+```
+
+</nav>
+
+<!-- =========================
+     MAIN CONTAINER
+========================= -->
+
+<div class="anemia-container">
+
+```
+<!-- =========================
+     HEADER
+========================= -->
+
+<div class="anemia-header">
+
+    <h1>
+        Anemia Risk Prediction
+    </h1>
+
+    <p>
+        Enter the required blood and clinical parameters
+        below. Our trained machine learning model will
+        estimate the potential risk pattern associated
+        with anemia.
+    </p>
+
+</div>
+
+
+<!-- =========================
+     FORM
+========================= -->
+
+<form action="/predict_anemia" method="POST">
+
+
+    <!-- =========================
+         BLOOD PARAMETERS
+    ========================= -->
+
+    <div class="form-section">
+
+        <h2>🩸 Blood Test Parameters</h2>
+
+        <p class="section-description">
+            Enter the blood parameters required by the
+            trained anemia prediction model.
+        </p>
+
+
+        <div class="form-grid">
+
+
+            <!-- GENDER -->
+
+            <div class="form-group">
+
+                <label>
+                    Gender
+                </label>
+
+                <select name="gender" required>
+
+                    <option value="">
+                        Select Gender
+                    </option>
+
+                    <option value="1">
+                        Male
+                    </option>
+
+                    <option value="0">
+                        Female
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- HEMOGLOBIN -->
+
+            <div class="form-group">
+
+                <label>
+                    Hemoglobin Level
+                </label>
+
+                <input type="number"
+                       step="0.01"
+                       name="hemoglobin"
+                       placeholder="Enter hemoglobin level"
+                       required>
+
+            </div>
+
+
+            <!-- MCH -->
+
+            <div class="form-group">
+
+                <label>
+                    MCH
+                </label>
+
+                <input type="number"
+                       step="0.01"
+                       name="mch"
+                       placeholder="Enter MCH value"
+                       required>
+
+            </div>
+
+
+            <!-- MCHC -->
+
+            <div class="form-group">
+
+                <label>
+                    MCHC
+                </label>
+
+                <input type="number"
+                       step="0.01"
+                       name="mchc"
+                       placeholder="Enter MCHC value"
+                       required>
+
+            </div>
+
+
+            <!-- MCV -->
+
+            <div class="form-group">
+
+                <label>
+                    MCV
+                </label>
+
+                <input type="number"
+                       step="0.01"
+                       name="mcv"
+                       placeholder="Enter MCV value"
+                       required>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         PREDICTION
+    ========================= -->
+
+    <div class="predict-area">
+
+        <button type="submit" class="predict-btn">
+
+            <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+            Predict Anemia Risk
+
+        </button>
+
+
+        {% if prediction_text %}
+
+        <div class="result-box
+            {% if 'High Risk' in prediction_text %}
+                high-risk
+            {% else %}
+                low-risk
+            {% endif %}">
+
+
+            <div class="result-icon">
+
+                {% if 'High Risk' in prediction_text %}
+                    ⚠️
+                {% else %}
+                    ✓
+                {% endif %}
+
+            </div>
+
+
+            <h3>
+                AI Risk Assessment
+            </h3>
+
+
+            <div class="result-title">
+                {{ prediction_text }}
+            </div>
+
+
+            <p>
+                This result is generated by the trained
+                machine learning model based on the
+                information provided.
+            </p>
+
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+</form>
+```
+
+</div>
+
+<!-- =========================
+     DISCLAIMER
+========================= -->
+
+<div class="disclaimer">
+
+```
+<strong>Important:</strong>
+
+This system provides AI-based health risk estimation
+for educational and research purposes only.
+
+It is not a medical diagnosis and should not replace
+advice from a qualified healthcare professional.
+```
+
+</div>
+
+</body>
+
+</html>

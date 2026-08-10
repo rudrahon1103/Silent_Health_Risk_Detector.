@@ -1,0 +1,789 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Silent Health AI | Home</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        /* =========================
+           HOME PAGE
+        ========================= */
+
+        .home-container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 520px;
+            padding: 70px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            background: linear-gradient(
+                135deg,
+                #f5f3ff,
+                #ffffff
+            );
+        }
+
+        .hero-text {
+            max-width: 650px;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 span {
+            color: #6c63ff;
+        }
+
+        .hero-text p {
+            color: #666;
+            font-size: 17px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            background: #6c63ff;
+            color: white;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .hero-image {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: #eeecff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .doctor {
+            font-size: 140px;
+            color: #6c63ff;
+        }
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .home-section {
+            padding: 65px 8%;
+            text-align: center;
+        }
+
+        .home-section h2 {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            color: #777;
+            max-width: 700px;
+            margin: 0 auto 35px;
+            line-height: 1.7;
+        }
+
+        /* =========================
+           DISEASE CARDS
+        ========================= */
+
+        .home-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .home-card {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 18px;
+            border: 1px solid #eeeeee;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            transition: 0.3s ease;
+        }
+
+        .home-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+
+        .home-card > i {
+            font-size: 38px;
+            color: #6c63ff;
+            margin-bottom: 15px;
+        }
+
+        .home-card h3 {
+            margin-bottom: 10px;
+            font-size: 21px;
+        }
+
+        .home-card p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 65px;
+        }
+
+        .card-btn {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 10px 22px;
+            border-radius: 8px;
+            background: #6c63ff;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .card-btn:hover {
+            opacity: 0.88;
+        }
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .features-section {
+            background: #f7f7fb;
+        }
+
+        .feature-grid {
+            max-width: 1050px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px 18px;
+            border-radius: 15px;
+            border: 1px solid #eeeeee;
+        }
+
+        .feature-card i {
+            font-size: 30px;
+            color: #6c63ff;
+            margin-bottom: 12px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            color: #777;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           FUTURE DEVICE
+        ========================= */
+
+        .device-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 65px 25px;
+            text-align: center;
+        }
+
+        .device-box {
+            background: linear-gradient(
+                135deg,
+                #f1efff,
+                #fafaff
+            );
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid #e5e2ff;
+        }
+
+        .device-box i {
+            font-size: 50px;
+            color: #6c63ff;
+            margin-bottom: 15px;
+        }
+
+        .device-box p {
+            color: #666;
+            line-height: 1.8;
+            max-width: 750px;
+            margin: auto;
+        }
+
+        /* =========================
+           DISCLAIMER
+        ========================= */
+
+        .home-disclaimer {
+            max-width: 900px;
+            margin: 0 auto 45px;
+            padding: 18px 22px;
+            background: #fafafa;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .home-footer {
+            padding: 25px;
+            text-align: center;
+            background: #f7f7fb;
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .hero {
+                padding: 55px 6%;
+            }
+
+            .hero-text h1 {
+                font-size: 38px;
+            }
+
+            .home-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 45px 20px;
+            }
+
+            .hero-text h1 {
+                font-size: 30px;
+            }
+
+            .hero-text p {
+                font-size: 15px;
+            }
+
+            .hero-image {
+                width: 220px;
+                height: 220px;
+            }
+
+            .doctor {
+                font-size: 100px;
+            }
+
+            .home-section {
+                padding: 50px 20px;
+            }
+
+            .home-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .device-box {
+                padding: 30px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================== -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-heart-pulse"></i>
+
+        Silent Health AI
+
+    </div>
+
+
+    <ul>
+
+        <li>
+            <a href="/" class="active">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a href="/about">
+                About
+            </a>
+        </li>
+
+        <li>
+            <a href="/dashboard">
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="/contact">
+                Contact
+            </a>
+        </li>
+
+    </ul>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================== -->
+
+<section class="hero">
+
+
+    <div class="hero-text">
+
+        <h1>
+
+            AI Powered
+
+            <span>
+                Women's Health
+            </span>
+
+            Risk Prediction
+
+        </h1>
+
+
+        <p>
+
+            Silent Health AI uses machine learning
+            models to estimate health risks associated
+            with PCOS, Anemia, Diabetes, Thyroid and
+            Stroke based on provided health parameters.
+
+        </p>
+
+
+        <a href="/dashboard" class="hero-btn">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            Start Prediction
+
+        </a>
+
+    </div>
+
+
+    <div class="hero-image">
+
+        <i class="fa-solid fa-user-doctor doctor"></i>
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================
+     SERVICES
+========================== -->
+
+<section class="home-section">
+
+
+    <h2>
+        Health Prediction Services
+    </h2>
+
+
+    <p class="section-subtitle">
+
+        Select a health condition to access
+        its dedicated AI-based risk screening model.
+
+    </p>
+
+
+    <div class="home-cards">
+
+
+        <!-- PCOS -->
+
+        <div class="home-card">
+
+            <i class="fa-solid fa-venus"></i>
+
+            <h3>
+                PCOS
+            </h3>
+
+            <p>
+
+                Analyze health, hormonal and
+                clinical parameters for PCOS
+                risk screening.
+
+            </p>
+
+            <a href="/pcos" class="card-btn">
+                Open
+            </a>
+
+        </div>
+
+
+        <!-- ANEMIA -->
+
+        <div class="home-card">
+
+            <i class="fa-solid fa-droplet"></i>
+
+            <h3>
+                Anemia
+            </h3>
+
+            <p>
+
+                Analyze blood parameters to
+                estimate anemia risk.
+
+            </p>
+
+            <a href="/anemia" class="card-btn">
+                Open
+            </a>
+
+        </div>
+
+
+        <!-- DIABETES -->
+
+        <div class="home-card">
+
+            <i class="fa-solid fa-heart-circle-check"></i>
+
+            <h3>
+                Diabetes
+            </h3>
+
+            <p>
+
+                Estimate diabetes risk using
+                important health parameters.
+
+            </p>
+
+            <a href="/diabetes" class="card-btn">
+                Open
+            </a>
+
+        </div>
+
+
+        <!-- THYROID -->
+
+        <div class="home-card">
+
+            <i class="fa-solid fa-notes-medical"></i>
+
+            <h3>
+                Thyroid
+            </h3>
+
+            <p>
+
+                Analyze thyroid-related health
+                and clinical parameters.
+
+            </p>
+
+            <a href="/thyroid" class="card-btn">
+                Open
+            </a>
+
+        </div>
+
+
+        <!-- STROKE -->
+
+        <div class="home-card">
+
+            <i class="fa-solid fa-brain"></i>
+
+            <h3>
+                Stroke
+            </h3>
+
+            <p>
+
+                Estimate stroke risk using
+                health and lifestyle parameters.
+
+            </p>
+
+            <a href="/stroke" class="card-btn">
+                Open
+            </a>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FEATURES
+========================== -->
+
+<section class="home-section features-section">
+
+
+    <h2>
+        Why Choose Silent Health AI?
+    </h2>
+
+
+    <p class="section-subtitle">
+
+        A machine-learning based system designed
+        for health-risk screening and academic research.
+
+    </p>
+
+
+    <div class="feature-grid">
+
+
+        <div class="feature-card">
+
+            <i class="fa-solid fa-robot"></i>
+
+            <h3>
+                AI Powered
+            </h3>
+
+            <p>
+
+                Uses trained machine learning
+                models for risk estimation.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <i class="fa-solid fa-bolt"></i>
+
+            <h3>
+                Fast Prediction
+            </h3>
+
+            <p>
+
+                Generate a screening result
+                after entering the required data.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <i class="fa-solid fa-shield-heart"></i>
+
+            <h3>
+                Health Focused
+            </h3>
+
+            <p>
+
+                Designed around multiple
+                health-related risk factors.
+
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <h3>
+                Data Analytics
+            </h3>
+
+            <p>
+
+                Uses multiple parameters to
+                generate model-based predictions.
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FUTURE DEVICE
+========================== -->
+
+<section class="device-section">
+
+
+    <div class="device-box">
+
+        <i class="fa-solid fa-watch-smart"></i>
+
+        <h2>
+            Future Device Integration
+        </h2>
+
+        <p>
+
+            Future versions of Silent Health AI can
+            integrate wearable health-monitoring
+            devices to collect parameters such as
+            heart rate, blood pressure, SpO₂ and
+            temperature. These measurements could
+            then be transmitted to the AI system for
+            automated risk analysis.
+
+        </p>
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================
+     DISCLAIMER
+========================== -->
+
+<div class="home-disclaimer">
+
+    <strong>
+        Important:
+    </strong>
+
+    Silent Health AI provides AI-based health
+    risk estimation for educational and research
+    purposes only. It is not a medical diagnosis
+    and should not replace advice from a qualified
+    healthcare professional.
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer class="home-footer">
+
+    <p>
+
+        © 2026 Silent Health AI |
+        AI-Based Health Risk Prediction System
+
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>
+```

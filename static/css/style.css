@@ -1,0 +1,860 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  }
+
+html,
+body {
+width: 100%;
+max-width: 100%;
+overflow-x: hidden;
+}
+
+body {
+background: #f4f8ff;
+color: #222;
+}
+
+/* =========================================================
+NAVBAR
+========================================================= */
+
+.navbar {
+width: 100%;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 20px 8%;
+background: #6C63FF;
+color: white;
+}
+
+.logo {
+font-size: 24px;
+font-weight: bold;
+}
+
+.navbar ul {
+display: flex;
+list-style: none;
+}
+
+.navbar ul li {
+margin-left: 30px;
+}
+
+.navbar ul li a {
+color: white;
+text-decoration: none;
+transition: 0.3s;
+}
+
+.navbar ul li a:hover {
+color: #FFD54F;
+}
+
+/* New navigation class used by About/Contact */
+
+.nav-links {
+display: flex;
+align-items: center;
+gap: 30px;
+}
+
+.nav-links a {
+color: white;
+text-decoration: none;
+font-weight: 500;
+transition: 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+color: #FFD54F;
+}
+
+/* =========================================================
+HERO
+========================================================= */
+
+.hero {
+width: 100%;
+min-height: 650px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 60px;
+padding: 70px 8%;
+flex-wrap: nowrap;
+overflow: hidden;
+}
+
+.hero-text {
+width: 55%;
+max-width: 700px;
+}
+
+.hero-text h1 {
+font-size: 52px;
+line-height: 1.15;
+color: #222;
+}
+
+.hero-text span {
+color: #6C63FF;
+}
+
+.hero-text p {
+margin: 25px 0;
+font-size: 18px;
+color: #555;
+line-height: 1.6;
+max-width: 650px;
+}
+
+.btn {
+display: inline-block;
+padding: 15px 35px;
+background: #6C63FF;
+color: white;
+text-decoration: none;
+border-radius: 30px;
+transition: 0.3s;
+border: none;
+}
+
+.btn:hover {
+background: #574fd6;
+transform: translateY(-2px);
+}
+
+.hero-image {
+width: 40%;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.doctor {
+font-size: 180px;
+color: #6C63FF;
+}
+
+/* =========================================================
+SERVICES
+========================================================= */
+
+.services {
+padding: 60px 8%;
+text-align: center;
+}
+
+.services h2 {
+margin-bottom: 20px;
+font-size: 36px;
+color: #333;
+}
+
+.cards {
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+gap: 25px;
+margin-top: 40px;
+}
+
+.card {
+width: 220px;
+background: white;
+padding: 25px;
+border-radius: 15px;
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+transition: 0.3s;
+}
+
+.card:hover {
+transform: translateY(-10px);
+}
+
+.card i {
+font-size: 45px;
+color: #6C63FF;
+margin-bottom: 15px;
+}
+
+.card h3 {
+margin-bottom: 10px;
+}
+
+/* =========================================================
+FEATURES
+========================================================= */
+
+.features {
+background: #6C63FF;
+color: white;
+text-align: center;
+padding: 60px;
+}
+
+.features h2 {
+margin-bottom: 30px;
+}
+
+.feature-box {
+display: flex;
+justify-content: center;
+gap: 60px;
+flex-wrap: wrap;
+}
+
+.feature-box div {
+width: 180px;
+}
+
+.feature-box i {
+font-size: 45px;
+margin-bottom: 15px;
+}
+
+/* =========================================================
+FOOTER
+========================================================= */
+
+footer {
+background: #222;
+color: white;
+text-align: center;
+padding: 20px;
+margin-top: 40px;
+}
+
+/* =========================================================
+PREDICTION CONTAINER
+========================================================= */
+
+.prediction-container {
+background: white;
+width: 90%;
+max-width: 1000px;
+margin: 40px auto;
+padding: 40px;
+border-radius: 20px;
+box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.prediction-container h2 {
+color: #6C63FF;
+margin-bottom: 30px;
+}
+
+/* =========================================================
+FORM SECTIONS
+========================================================= */
+
+.form-section {
+text-align: left;
+margin-bottom: 30px;
+}
+
+.form-section h3 {
+color: #333;
+margin-bottom: 15px;
+border-left: 5px solid #6C63FF;
+padding-left: 10px;
+}
+
+.form-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 15px;
+}
+
+.form-grid input,
+.form-grid select {
+width: 100%;
+padding: 12px 15px;
+border: 1px solid #ddd;
+border-radius: 10px;
+outline: none;
+font-size: 15px;
+background: white;
+transition: 0.3s;
+}
+
+.form-grid input:focus,
+.form-grid select:focus {
+border-color: #6C63FF;
+box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+}
+
+/* =========================================================
+PREDICT BUTTON
+========================================================= */
+
+.predict-btn {
+margin-top: 20px;
+cursor: pointer;
+font-size: 16px;
+}
+
+/* =========================================================
+RESULT BOX
+========================================================= */
+
+.result-box {
+margin-top: 30px;
+padding: 20px;
+background: #f0f2ff;
+border-radius: 15px;
+color: #333;
+font-size: 20px;
+font-weight: bold;
+text-align: center;
+}
+
+/* =========================================================
+DASHBOARD HEADER
+========================================================= */
+
+.dashboard-header {
+text-align: center;
+padding: 60px 8% 30px;
+}
+
+.dashboard-header h1 {
+font-size: 42px;
+color: #222;
+margin-bottom: 10px;
+}
+
+.dashboard-header p {
+color: #666;
+font-size: 17px;
+line-height: 1.6;
+}
+
+/* =========================================================
+DASHBOARD STATISTICS
+========================================================= */
+
+.stats-container {
+display: flex;
+justify-content: center;
+flex-wrap: wrap;
+gap: 20px;
+padding: 20px 8% 50px;
+}
+
+.stat-card {
+background: white;
+width: 180px;
+padding: 25px 15px;
+text-align: center;
+border-radius: 15px;
+box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+transition: 0.3s;
+}
+
+.stat-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card h2 {
+font-size: 32px;
+color: #6C63FF;
+margin-bottom: 8px;
+}
+
+.stat-card p {
+color: #555;
+font-size: 14px;
+}
+
+/* =========================================================
+DASHBOARD DESCRIPTION
+========================================================= */
+
+.section-description {
+color: #666;
+margin-bottom: 10px;
+line-height: 1.6;
+}
+
+/* =========================================================
+DISEASE CARDS
+========================================================= */
+
+.disease-card {
+width: 250px;
+min-height: 310px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+}
+
+.disease-icon {
+font-size: 55px;
+margin-bottom: 15px;
+}
+
+.disease-card h3 {
+font-size: 22px;
+}
+
+.disease-card p {
+color: #666;
+line-height: 1.5;
+margin-bottom: 20px;
+}
+
+.disease-card .btn {
+margin-top: auto;
+}
+
+/* =========================================================
+ABOUT & CONTACT - PAGE HERO
+========================================================= */
+
+.page-hero {
+width: 100%;
+padding: 75px 8% 65px;
+background: linear-gradient(135deg, #6C63FF, #8179ff);
+color: white;
+text-align: center;
+}
+
+.page-hero > div {
+max-width: 850px;
+margin: auto;
+}
+
+.page-hero h1 {
+font-size: 44px;
+margin-bottom: 18px;
+font-weight: 700;
+}
+
+.page-hero p {
+max-width: 750px;
+margin: auto;
+font-size: 17px;
+line-height: 1.7;
+color: rgba(255, 255, 255, 0.92);
+}
+
+/* =========================================================
+ABOUT & CONTACT - CONTENT
+========================================================= */
+
+.content-section {
+width: 90%;
+max-width: 1100px;
+margin: 45px auto;
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 25px;
+}
+
+/* =========================================================
+INFORMATION CARDS
+========================================================= */
+
+.info-card {
+background: white;
+padding: 30px;
+border-radius: 18px;
+box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+transition: 0.3s ease;
+}
+
+.info-card:hover {
+transform: translateY(-4px);
+box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.info-card h2 {
+color: #6C63FF;
+font-size: 25px;
+margin-bottom: 18px;
+}
+
+.info-card p {
+color: #666;
+line-height: 1.7;
+margin-bottom: 12px;
+}
+
+/* =========================================================
+DISEASE LIST
+========================================================= */
+
+.disease-list {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 15px;
+}
+
+.disease-list > div {
+background: #f7f7ff;
+padding: 18px;
+border-radius: 12px;
+border-left: 4px solid #6C63FF;
+transition: 0.3s;
+}
+
+.disease-list > div:hover {
+transform: translateY(-3px);
+background: #f1f0ff;
+}
+
+.disease-list span {
+display: block;
+font-size: 28px;
+margin-bottom: 7px;
+}
+
+.disease-list strong {
+display: block;
+color: #333;
+font-size: 17px;
+margin-bottom: 5px;
+}
+
+.disease-list p {
+font-size: 13px;
+margin: 0;
+line-height: 1.5;
+}
+
+/* =========================================================
+HOW THE SYSTEM WORKS
+========================================================= */
+
+.process {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 18px;
+}
+
+.process > div {
+text-align: center;
+background: #f7f7ff;
+padding: 22px 15px;
+border-radius: 14px;
+}
+
+.process span {
+width: 48px;
+height: 48px;
+display: flex;
+justify-content: center;
+align-items: center;
+margin: 0 auto 15px;
+background: #6C63FF;
+color: white;
+border-radius: 50%;
+font-weight: bold;
+}
+
+.process h3 {
+font-size: 17px;
+color: #333;
+margin-bottom: 8px;
+}
+
+.process p {
+font-size: 13px;
+margin: 0;
+}
+
+/* =========================================================
+TECHNOLOGY BADGES
+========================================================= */
+
+.tech-list {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+}
+
+.tech-list span {
+background: #f0efff;
+color: #5b54dc;
+padding: 9px 15px;
+border-radius: 20px;
+font-size: 14px;
+font-weight: 600;
+}
+
+/* =========================================================
+DISCLAIMER
+========================================================= */
+
+.disclaimer-card {
+grid-column: 1 / -1;
+border-left: 5px solid #FFD54F;
+background: #fffdf3;
+}
+
+.disclaimer-card h2 {
+color: #444;
+}
+
+.disclaimer-card p {
+margin: 0;
+}
+
+/* =========================================================
+CONTACT PAGE
+========================================================= */
+
+.contact-grid {
+width: 100%;
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 25px;
+}
+
+.contact-grid .disclaimer-card {
+grid-column: 1 / -1;
+}
+
+.contact-item {
+display: flex;
+align-items: center;
+gap: 15px;
+padding: 16px;
+margin-top: 15px;
+background: #f7f7ff;
+border-radius: 12px;
+}
+
+.contact-item > span {
+font-size: 28px;
+}
+
+.contact-item strong {
+color: #333;
+}
+
+.contact-item p {
+margin: 4px 0 0;
+font-size: 14px;
+}
+
+.team-box {
+display: flex;
+align-items: center;
+gap: 18px;
+margin-top: 20px;
+padding: 20px;
+background: #f7f7ff;
+border-radius: 14px;
+}
+
+.team-icon {
+width: 60px;
+height: 60px;
+min-width: 60px;
+display: flex;
+justify-content: center;
+align-items: center;
+background: #6C63FF;
+border-radius: 50%;
+font-size: 28px;
+}
+
+.team-box h3 {
+color: #333;
+margin-bottom: 5px;
+}
+
+.team-box p {
+font-size: 13px;
+margin: 0;
+}
+
+/* =========================================================
+MOBILE RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+```
+.navbar {
+    padding: 15px 5%;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.navbar ul {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.navbar ul li {
+    margin: 5px 10px;
+}
+
+.nav-links {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+}
+
+.nav-links a {
+    font-size: 14px;
+}
+
+.hero {
+    min-height: auto;
+    padding: 50px 5%;
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+}
+
+.hero-text {
+    width: 100%;
+    max-width: 100%;
+}
+
+.hero-text h1 {
+    font-size: 38px;
+}
+
+.hero-text p {
+    font-size: 16px;
+}
+
+.hero-image {
+    width: 100%;
+}
+
+.doctor {
+    font-size: 130px;
+}
+
+.services {
+    padding: 40px 5%;
+}
+
+.prediction-container {
+    width: 94%;
+    padding: 25px;
+}
+
+.form-grid {
+    grid-template-columns: 1fr;
+}
+
+.dashboard-header {
+    padding: 40px 5% 20px;
+}
+
+.dashboard-header h1 {
+    font-size: 32px;
+}
+
+.stats-container {
+    padding: 20px 5% 40px;
+}
+
+.stat-card {
+    width: 140px;
+}
+
+.features {
+    padding: 45px 20px;
+}
+
+/* About / Contact mobile */
+
+.page-hero {
+    padding: 50px 5%;
+}
+
+.page-hero h1 {
+    font-size: 32px;
+}
+
+.page-hero p {
+    font-size: 15px;
+}
+
+.content-section {
+    width: 92%;
+    grid-template-columns: 1fr;
+    margin: 30px auto;
+}
+
+.info-card {
+    padding: 22px;
+}
+
+.disease-list {
+    grid-template-columns: 1fr;
+}
+
+.process {
+    grid-template-columns: 1fr;
+}
+
+.contact-grid {
+    grid-template-columns: 1fr;
+}
+
+.contact-grid .disclaimer-card {
+    grid-column: auto;
+}
+
+.disclaimer-card {
+    grid-column: auto;
+}
+
+.team-box {
+    align-items: flex-start;
+}
+```
+
+}
+
+/* =========================================================
+SMALL MOBILE DEVICES
+========================================================= */
+
+@media (max-width: 400px) {
+
+```
+.logo {
+    font-size: 21px;
+}
+
+.nav-links {
+    gap: 10px 14px;
+}
+
+.nav-links a {
+    font-size: 13px;
+}
+
+.page-hero h1 {
+    font-size: 28px;
+}
+
+.info-card h2 {
+    font-size: 22px;
+}
+
+.process > div {
+    padding: 20px 12px;
+}
+```
+
+}

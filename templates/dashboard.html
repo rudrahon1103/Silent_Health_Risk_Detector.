@@ -1,0 +1,2090 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Silent Health AI</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <style>
+
+        /* =====================================================
+           DASHBOARD
+        ===================================================== */
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 25px 70px;
+        }
+
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+
+        .dashboard-header h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+
+        .dashboard-header h1 span {
+            color: #6c63ff;
+        }
+
+
+        .dashboard-header p {
+            max-width: 700px;
+            margin: auto;
+            color: #666;
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 18px;
+            margin-bottom: 50px;
+        }
+
+
+        .stat-card {
+            background: white;
+            padding: 24px 15px;
+            text-align: center;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            border: 1px solid #eeeeee;
+        }
+
+
+        .stat-card i {
+            font-size: 25px;
+            color: #6c63ff;
+            margin-bottom: 10px;
+        }
+
+
+        .stat-card h2 {
+            margin: 5px 0;
+            font-size: 27px;
+            color: #333;
+        }
+
+
+        .stat-card p {
+            margin: 0;
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           IOT DEVICE
+        ===================================================== */
+
+        .iot-section {
+            margin-bottom: 55px;
+        }
+
+
+        .iot-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid #eeeeee;
+            box-shadow: 0 7px 25px rgba(0,0,0,0.08);
+        }
+
+
+        .iot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+
+        .iot-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        .iot-title-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 15px;
+            background: #f1efff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #6c63ff;
+        }
+
+
+        .iot-title h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+
+        .iot-title p {
+            margin: 4px 0 0;
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           DEVICE STATUS
+        ===================================================== */
+
+        .device-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+        }
+
+
+        .device-status.online {
+            background: #e8f8ee;
+            color: #218838;
+        }
+
+
+        .device-status.online .status-dot {
+            background: #28a745;
+        }
+
+
+        .device-status.offline {
+            background: #f8e8e8;
+            color: #c62828;
+        }
+
+
+        .device-status.offline .status-dot {
+            background: #dc3545;
+        }
+
+
+        /* =====================================================
+           OVERALL HEALTH STATUS
+        ===================================================== */
+
+        .overall-status {
+            margin-bottom: 25px;
+            padding: 15px 20px;
+            border-radius: 14px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            border: 1px solid #eeeeee;
+        }
+
+
+        .overall-status.normal {
+            background: #e8f8ee;
+            color: #218838;
+        }
+
+
+        .overall-status.abnormal {
+            background: #fff1f1;
+            color: #c62828;
+        }
+
+
+        .overall-status.unknown {
+            background: #f5f5f5;
+            color: #777;
+        }
+
+
+        /* =====================================================
+           SENSOR GRID
+        ===================================================== */
+
+        .sensor-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+
+        .sensor-card {
+            padding: 25px 20px;
+            border-radius: 16px;
+            background: #fafaff;
+            border: 1px solid #eeeeee;
+            text-align: center;
+            transition: 0.3s ease;
+        }
+
+
+        .sensor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+        }
+
+
+        .sensor-icon {
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+
+        .sensor-card h3 {
+            margin: 0 0 8px;
+            font-size: 17px;
+            color: #444;
+        }
+
+
+        .sensor-value {
+            font-size: 30px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+
+        .sensor-unit {
+            font-size: 13px;
+            color: #777;
+        }
+
+
+        /* =====================================================
+           SENSOR STATUS
+        ===================================================== */
+
+        .sensor-status {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+        }
+
+
+        .sensor-status.normal {
+            background: #e8f8ee;
+            color: #218838;
+        }
+
+
+        .sensor-status.abnormal {
+            background: #fff1f1;
+            color: #c62828;
+        }
+
+
+        .sensor-status.unknown {
+            background: #eeeeee;
+            color: #777;
+        }
+
+
+        /* =====================================================
+           LIVE GRAPH
+        ===================================================== */
+
+        .history-section {
+            margin-top: 35px;
+        }
+
+
+        .history-card {
+            background: #ffffff;
+            border: 1px solid #eeeeee;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+
+        .history-header h3 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+
+        .history-header p {
+            margin: 5px 0 0;
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        .history-badge {
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: #f1efff;
+            color: #6c63ff;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
+
+
+        .history-info {
+            text-align: center;
+            margin-top: 15px;
+            color: #888;
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           UPDATED
+        ===================================================== */
+
+        .iot-updated {
+            text-align: center;
+            margin-top: 22px;
+            color: #888;
+            font-size: 12px;
+        }
+
+
+        .iot-error {
+            display: none;
+            text-align: center;
+            margin-top: 18px;
+            padding: 12px;
+            border-radius: 10px;
+            background: #fff1f1;
+            color: #c62828;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           SECTION TITLE
+        ===================================================== */
+
+        .dashboard-section {
+            margin-bottom: 55px;
+        }
+
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+
+        .section-heading h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+
+        .section-heading p {
+            color: #777;
+            max-width: 700px;
+            margin: auto;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           DISEASE CARDS
+        ===================================================== */
+
+        .disease-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+
+        .disease-card {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 18px;
+            text-align: center;
+            border: 1px solid #eeeeee;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+            transition: 0.3s ease;
+        }
+
+
+        .disease-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+
+
+        .disease-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #f1efff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+
+        .disease-card h3 {
+            font-size: 21px;
+            margin-bottom: 10px;
+        }
+
+
+        .disease-card p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 68px;
+            margin-bottom: 20px;
+        }
+
+
+        .disease-card .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 11px 22px;
+            border-radius: 9px;
+            background: #6c63ff;
+            color: white;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+
+        .disease-card .btn:hover {
+            opacity: 0.88;
+        }
+
+
+        /* =====================================================
+           HOW IT WORKS
+        ===================================================== */
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+
+        .process-card {
+            background: white;
+            padding: 28px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid #eeeeee;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+
+        .process-number {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #6c63ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+
+        .process-card h3 {
+            margin-bottom: 8px;
+        }
+
+
+        .process-card p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           DISCLAIMER
+        ===================================================== */
+
+        .dashboard-disclaimer {
+            max-width: 850px;
+            margin: 0 auto 30px;
+            padding: 18px 22px;
+            background: #fafafa;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .dashboard-footer {
+            text-align: center;
+            padding: 25px 15px;
+            background: #f7f7fb;
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .disease-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .sensor-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .iot-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+
+            .history-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .dashboard-container {
+                padding: 35px 15px 50px;
+            }
+
+
+            .dashboard-header h1 {
+                font-size: 28px;
+            }
+
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .disease-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .iot-card {
+                padding: 22px 15px;
+            }
+
+
+            .iot-title h2 {
+                font-size: 20px;
+            }
+
+
+            .sensor-value {
+                font-size: 27px;
+            }
+
+
+            .history-card {
+                padding: 18px 12px;
+            }
+
+
+            .chart-container {
+                height: 280px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <i class="fa-solid fa-heart-pulse"></i>
+
+        Silent Health AI
+
+    </div>
+
+
+    <ul>
+
+        <li>
+            <a href="/">Home</a>
+        </li>
+
+        <li>
+            <a href="/about">About</a>
+        </li>
+
+        <li>
+            <a href="/dashboard" class="active">Dashboard</a>
+        </li>
+
+        <li>
+            <a href="/contact">Contact</a>
+        </li>
+
+    </ul>
+
+</nav>
+
+
+<!-- =========================================================
+     MAIN DASHBOARD
+========================================================= -->
+
+<main class="dashboard-container">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <section class="dashboard-header">
+
+        <h1>
+
+            AI Health
+            <span>Dashboard</span>
+
+        </h1>
+
+
+        <p>
+
+            Select a health condition below to perform
+            an AI-based risk screening assessment using
+            our trained machine learning models.
+
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+         STATISTICS
+    ====================================================== -->
+
+    <section class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-robot"></i>
+
+            <h2>5</h2>
+
+            <p>AI Disease Models</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-venus"></i>
+
+            <h2>541</h2>
+
+            <p>PCOS Records</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-droplet"></i>
+
+            <h2>1,421</h2>
+
+            <p>Anemia Records</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-brain"></i>
+
+            <h2>5,110</h2>
+
+            <p>Stroke Records</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <i class="fa-solid fa-notes-medical"></i>
+
+            <h2>212K+</h2>
+
+            <p>Thyroid Records</p>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         IOT HEALTH DEVICE
+    ====================================================== -->
+
+    <section class="iot-section">
+
+
+        <div class="section-heading">
+
+            <h2>
+                Virtual Health Device
+            </h2>
+
+            <p>
+                Live health readings received from the
+                Silent Health AI IoT simulator.
+            </p>
+
+        </div>
+
+
+        <div class="iot-card">
+
+
+            <!-- =================================================
+                 IOT HEADER
+            ================================================== -->
+
+            <div class="iot-header">
+
+
+                <div class="iot-title">
+
+                    <div class="iot-title-icon">
+
+                        <i class="fa-solid fa-microchip"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Live Sensor Monitoring
+                        </h2>
+
+                        <p>
+                            Heart rate, SpO₂ and temperature
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div id="deviceStatus"
+                     class="device-status offline">
+
+                    <span class="status-dot"></span>
+
+                    <span id="statusText">
+                        OFFLINE
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 OVERALL STATUS
+            ================================================== -->
+
+            <div id="overallStatus"
+                 class="overall-status unknown">
+
+                Health Status:
+
+                <strong id="overallStatusText">
+                    WAITING FOR SENSOR DATA
+                </strong>
+
+            </div>
+
+
+            <!-- =================================================
+                 SENSOR GRID
+            ================================================== -->
+
+            <div class="sensor-grid">
+
+
+                <!-- HEART RATE -->
+
+                <div class="sensor-card">
+
+                    <div class="sensor-icon">
+                        ❤️
+                    </div>
+
+                    <h3>
+                        Heart Rate
+                    </h3>
+
+
+                    <div class="sensor-value"
+                         id="heartRate">
+
+                        ---
+
+                    </div>
+
+
+                    <div class="sensor-unit">
+                        BPM
+                    </div>
+
+
+                    <div id="heartRateStatus"
+                         class="sensor-status unknown">
+
+                        UNKNOWN
+
+                    </div>
+
+                </div>
+
+
+                <!-- SPO2 -->
+
+                <div class="sensor-card">
+
+                    <div class="sensor-icon">
+                        🫁
+                    </div>
+
+                    <h3>
+                        SpO₂
+                    </h3>
+
+
+                    <div class="sensor-value"
+                         id="spo2">
+
+                        ---
+
+                    </div>
+
+
+                    <div class="sensor-unit">
+                        %
+                    </div>
+
+
+                    <div id="spo2Status"
+                         class="sensor-status unknown">
+
+                        UNKNOWN
+
+                    </div>
+
+                </div>
+
+
+                <!-- TEMPERATURE -->
+
+                <div class="sensor-card">
+
+                    <div class="sensor-icon">
+                        🌡️
+                    </div>
+
+                    <h3>
+                        Temperature
+                    </h3>
+
+
+                    <div class="sensor-value"
+                         id="temperature">
+
+                        ---
+
+                    </div>
+
+
+                    <div class="sensor-unit">
+                        °C
+                    </div>
+
+
+                    <div id="temperatureStatus"
+                         class="sensor-status unknown">
+
+                        UNKNOWN
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 LIVE SENSOR HISTORY GRAPH
+            ================================================== -->
+
+            <div class="history-section">
+
+                <div class="history-card">
+
+
+                    <div class="history-header">
+
+                        <div>
+
+                            <h3>
+                                <i class="fa-solid fa-chart-line"></i>
+                                Live Sensor History
+                            </h3>
+
+                            <p>
+                                Real-time visualization of the
+                                latest sensor readings.
+                            </p>
+
+                        </div>
+
+
+                        <div class="history-badge">
+
+                            LIVE • LAST 30 READINGS
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container">
+
+                        <canvas id="sensorChart"></canvas>
+
+                    </div>
+
+
+                    <div class="history-info">
+
+                        Graph automatically updates every
+                        2 seconds while the IoT simulator is running.
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 API ERROR
+            ================================================== -->
+
+            <div id="iotError"
+                 class="iot-error">
+
+                Unable to connect to the Silent Health AI
+                sensor API.
+
+            </div>
+
+
+            <!-- =================================================
+                 LAST UPDATE
+            ================================================== -->
+
+            <div class="iot-updated">
+
+                Last dashboard update:
+
+                <strong id="lastUpdated">
+
+                    Waiting for sensor data...
+
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DISEASE PREDICTIONS
+    ====================================================== -->
+
+    <section class="dashboard-section">
+
+
+        <div class="section-heading">
+
+            <h2>
+                Choose a Disease Prediction
+            </h2>
+
+            <p>
+
+                Select a condition and enter the required
+                health parameters to generate an AI-based
+                risk screening result.
+
+            </p>
+
+        </div>
+
+
+        <div class="disease-grid">
+
+
+            <!-- PCOS -->
+
+            <div class="disease-card">
+
+                <div class="disease-icon">
+                    🌸
+                </div>
+
+                <h3>
+                    PCOS
+                </h3>
+
+                <p>
+
+                    Analyze health, hormonal and clinical
+                    parameters for PCOS risk screening.
+
+                </p>
+
+                <a href="/pcos"
+                   class="btn">
+
+                    Predict PCOS
+
+                </a>
+
+            </div>
+
+
+            <!-- ANEMIA -->
+
+            <div class="disease-card">
+
+                <div class="disease-icon">
+                    🩸
+                </div>
+
+                <h3>
+                    Anemia
+                </h3>
+
+                <p>
+
+                    Analyze blood parameters to estimate
+                    anemia risk.
+
+                </p>
+
+                <a href="/anemia"
+                   class="btn">
+
+                    Predict Anemia
+
+                </a>
+
+            </div>
+
+
+            <!-- DIABETES -->
+
+            <div class="disease-card">
+
+                <div class="disease-icon">
+                    🧪
+                </div>
+
+                <h3>
+                    Diabetes
+                </h3>
+
+                <p>
+
+                    Analyze glucose, BMI, blood pressure
+                    and other health parameters.
+
+                </p>
+
+                <a href="/diabetes"
+                   class="btn">
+
+                    Predict Diabetes
+
+                </a>
+
+            </div>
+
+
+            <!-- THYROID -->
+
+            <div class="disease-card">
+
+                <div class="disease-icon">
+                    🦋
+                </div>
+
+                <h3>
+                    Thyroid
+                </h3>
+
+                <p>
+
+                    Analyze thyroid hormone levels and
+                    associated health factors.
+
+                </p>
+
+                <a href="/thyroid"
+                   class="btn">
+
+                    Predict Thyroid
+
+                </a>
+
+            </div>
+
+
+            <!-- STROKE -->
+
+            <div class="disease-card">
+
+                <div class="disease-icon">
+                    🧠
+                </div>
+
+                <h3>
+                    Stroke
+                </h3>
+
+                <p>
+
+                    Analyze cardiovascular and lifestyle
+                    factors for stroke risk screening.
+
+                </p>
+
+                <a href="/stroke"
+                   class="btn">
+
+                    Predict Stroke
+
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         HOW IT WORKS
+    ====================================================== -->
+
+    <section class="dashboard-section">
+
+
+        <div class="section-heading">
+
+            <h2>
+                How Silent Health AI Works
+            </h2>
+
+            <p>
+
+                Three simple steps from health information
+                to AI-based risk screening.
+
+            </p>
+
+        </div>
+
+
+        <div class="process-grid">
+
+
+            <div class="process-card">
+
+                <div class="process-number">
+                    01
+                </div>
+
+                <h3>
+                    Enter Data
+                </h3>
+
+                <p>
+
+                    Enter the available health and clinical
+                    parameters required by the selected model.
+
+                </p>
+
+            </div>
+
+
+            <div class="process-card">
+
+                <div class="process-number">
+                    02
+                </div>
+
+                <h3>
+                    AI Analysis
+                </h3>
+
+                <p>
+
+                    The trained machine learning model
+                    analyzes the submitted information.
+
+                </p>
+
+            </div>
+
+
+            <div class="process-card">
+
+                <div class="process-number">
+                    03
+                </div>
+
+                <h3>
+                    Risk Result
+                </h3>
+
+                <p>
+
+                    The system displays an AI-generated
+                    risk screening result.
+
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DISCLAIMER
+    ====================================================== -->
+
+    <div class="dashboard-disclaimer">
+
+        <strong>Important:</strong>
+
+        Silent Health AI provides AI-based health risk
+        estimation and sensor-status screening for
+        educational and research purposes.
+
+        It is not a medical diagnosis and should not replace
+        advice from a qualified healthcare professional.
+
+    </div>
+
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="dashboard-footer">
+
+    <p>
+
+        © 2026 Silent Health AI |
+        AI-Based Health Risk Screening
+
+    </p>
+
+</footer>
+
+
+<!-- =========================================================
+     IOT DASHBOARD JAVASCRIPT
+========================================================= -->
+
+<script>
+
+
+    // ========================================================
+    // GET HTML ELEMENTS
+    // ========================================================
+
+    const heartRateElement =
+        document.getElementById("heartRate");
+
+    const spo2Element =
+        document.getElementById("spo2");
+
+    const temperatureElement =
+        document.getElementById("temperature");
+
+
+    const heartRateStatusElement =
+        document.getElementById("heartRateStatus");
+
+    const spo2StatusElement =
+        document.getElementById("spo2Status");
+
+    const temperatureStatusElement =
+        document.getElementById("temperatureStatus");
+
+
+    const overallStatusElement =
+        document.getElementById("overallStatus");
+
+    const overallStatusTextElement =
+        document.getElementById("overallStatusText");
+
+
+    const deviceStatusElement =
+        document.getElementById("deviceStatus");
+
+    const statusTextElement =
+        document.getElementById("statusText");
+
+
+    const lastUpdatedElement =
+        document.getElementById("lastUpdated");
+
+
+    const iotErrorElement =
+        document.getElementById("iotError");
+
+
+    // ========================================================
+    // CREATE LIVE SENSOR CHART
+    // ========================================================
+
+    const chartContext =
+        document.getElementById("sensorChart").getContext("2d");
+
+
+    const sensorChart = new Chart(
+        chartContext,
+        {
+
+            type: "line",
+
+            data: {
+
+                labels: [],
+
+                datasets: [
+
+                    {
+                        label: "Heart Rate (BPM)",
+
+                        data: [],
+
+                        borderWidth: 2,
+
+                        tension: 0.35,
+
+                        fill: false
+                    },
+
+                    {
+                        label: "SpO₂ (%)",
+
+                        data: [],
+
+                        borderWidth: 2,
+
+                        tension: 0.35,
+
+                        fill: false
+                    },
+
+                    {
+                        label: "Temperature (°C)",
+
+                        data: [],
+
+                        borderWidth: 2,
+
+                        tension: 0.35,
+
+                        fill: false
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                animation: false,
+
+                interaction: {
+
+                    mode: "index",
+
+                    intersect: false
+
+                },
+
+                plugins: {
+
+                    legend: {
+
+                        position: "top"
+
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        title: {
+
+                            display: true,
+
+                            text: "Time"
+
+                        }
+
+                    },
+
+                    y: {
+
+                        title: {
+
+                            display: true,
+
+                            text: "Sensor Value"
+
+                        },
+
+                        beginAtZero: false
+
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+
+    // ========================================================
+    // UPDATE DEVICE STATUS
+    // ========================================================
+
+    function updateDeviceStatus(status) {
+
+        const normalizedStatus =
+            String(status).toLowerCase();
+
+
+        deviceStatusElement.classList.remove(
+            "online",
+            "offline"
+        );
+
+
+        if (normalizedStatus === "online") {
+
+            deviceStatusElement.classList.add(
+                "online"
+            );
+
+            statusTextElement.textContent =
+                "ONLINE";
+
+        }
+
+        else {
+
+            deviceStatusElement.classList.add(
+                "offline"
+            );
+
+            statusTextElement.textContent =
+                "OFFLINE";
+
+        }
+
+    }
+
+
+    // ========================================================
+    // UPDATE SENSOR STATUS
+    // ========================================================
+
+    function updateSensorStatus(
+        element,
+        status
+    ) {
+
+        const normalizedStatus =
+            String(status).toLowerCase();
+
+
+        element.classList.remove(
+            "normal",
+            "abnormal",
+            "unknown"
+        );
+
+
+        if (normalizedStatus === "normal") {
+
+            element.classList.add(
+                "normal"
+            );
+
+            element.textContent =
+                "NORMAL";
+
+        }
+
+        else if (
+            normalizedStatus === "abnormal"
+        ) {
+
+            element.classList.add(
+                "abnormal"
+            );
+
+            element.textContent =
+                "ABNORMAL";
+
+        }
+
+        else {
+
+            element.classList.add(
+                "unknown"
+            );
+
+            element.textContent =
+                "UNKNOWN";
+
+        }
+
+    }
+
+
+    // ========================================================
+    // UPDATE OVERALL HEALTH STATUS
+    // ========================================================
+
+    function updateOverallStatus(status) {
+
+        const normalizedStatus =
+            String(status).toLowerCase();
+
+
+        overallStatusElement.classList.remove(
+            "normal",
+            "abnormal",
+            "unknown"
+        );
+
+
+        if (
+            normalizedStatus === "normal"
+        ) {
+
+            overallStatusElement.classList.add(
+                "normal"
+            );
+
+            overallStatusTextElement.textContent =
+                "NORMAL";
+
+        }
+
+        else if (
+            normalizedStatus === "abnormal"
+        ) {
+
+            overallStatusElement.classList.add(
+                "abnormal"
+            );
+
+            overallStatusTextElement.textContent =
+                "ABNORMAL READING DETECTED";
+
+        }
+
+        else {
+
+            overallStatusElement.classList.add(
+                "unknown"
+            );
+
+            overallStatusTextElement.textContent =
+                "WAITING FOR SENSOR DATA";
+
+        }
+
+    }
+
+
+    // ========================================================
+    // UPDATE LIVE GRAPH
+    // ========================================================
+
+    async function updateSensorHistory() {
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/sensor-history",
+                    {
+                        cache: "no-store"
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "History API error"
+                );
+
+            }
+
+
+            const result =
+                await response.json();
+
+
+            const history =
+                result.history || [];
+
+
+            // ================================================
+            // PREPARE GRAPH DATA
+            // ================================================
+
+            const labels =
+                history.map(
+                    item => item.time
+                );
+
+
+            const heartRateData =
+                history.map(
+                    item => item.heart_rate
+                );
+
+
+            const spo2Data =
+                history.map(
+                    item => item.spo2
+                );
+
+
+            const temperatureData =
+                history.map(
+                    item => item.temperature
+                );
+
+
+            // ================================================
+            // UPDATE CHART
+            // ================================================
+
+            sensorChart.data.labels =
+                labels;
+
+
+            sensorChart.data.datasets[0].data =
+                heartRateData;
+
+
+            sensorChart.data.datasets[1].data =
+                spo2Data;
+
+
+            sensorChart.data.datasets[2].data =
+                temperatureData;
+
+
+            sensorChart.update();
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Sensor history error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    // ========================================================
+    // FETCH CURRENT SENSOR DATA
+    // ========================================================
+
+    async function fetchSensorData() {
+
+        try {
+
+            const response = await fetch(
+
+                "/api/sensor-data",
+
+                {
+
+                    method: "GET",
+
+                    cache: "no-store"
+
+                }
+
+            );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Sensor API returned HTTP "
+                    + response.status
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            // =================================================
+            // UPDATE SENSOR VALUES
+            // =================================================
+
+            if (
+                data.device_status === "Offline"
+            ) {
+
+                heartRateElement.textContent =
+                    "---";
+
+                spo2Element.textContent =
+                    "---";
+
+                temperatureElement.textContent =
+                    "---";
+
+
+                updateSensorStatus(
+                    heartRateStatusElement,
+                    "UNKNOWN"
+                );
+
+                updateSensorStatus(
+                    spo2StatusElement,
+                    "UNKNOWN"
+                );
+
+                updateSensorStatus(
+                    temperatureStatusElement,
+                    "UNKNOWN"
+                );
+
+                updateOverallStatus(
+                    "UNKNOWN"
+                );
+
+            }
+
+            else {
+
+                heartRateElement.textContent =
+                    data.heart_rate ?? "---";
+
+                spo2Element.textContent =
+                    data.spo2 ?? "---";
+
+                temperatureElement.textContent =
+                    data.temperature ?? "---";
+
+
+                updateSensorStatus(
+                    heartRateStatusElement,
+                    data.heart_rate_status
+                );
+
+
+                updateSensorStatus(
+                    spo2StatusElement,
+                    data.spo2_status
+                );
+
+
+                updateSensorStatus(
+                    temperatureStatusElement,
+                    data.temperature_status
+                );
+
+
+                updateOverallStatus(
+                    data.overall_status
+                );
+
+            }
+
+
+            // =================================================
+            // UPDATE DEVICE STATUS
+            // =================================================
+
+            updateDeviceStatus(
+                data.device_status
+            );
+
+
+            // =================================================
+            // HIDE ERROR
+            // =================================================
+
+            iotErrorElement.style.display =
+                "none";
+
+
+            // =================================================
+            // UPDATE TIME
+            // =================================================
+
+            const now =
+                new Date();
+
+
+            lastUpdatedElement.textContent =
+                now.toLocaleTimeString();
+
+
+            // =================================================
+            // UPDATE GRAPH
+            // =================================================
+
+            updateSensorHistory();
+
+        }
+
+
+        catch (error) {
+
+            console.error(
+                "IoT sensor error:",
+                error
+            );
+
+
+            iotErrorElement.style.display =
+                "block";
+
+
+            updateDeviceStatus(
+                "Offline"
+            );
+
+
+            updateSensorStatus(
+                heartRateStatusElement,
+                "UNKNOWN"
+            );
+
+            updateSensorStatus(
+                spo2StatusElement,
+                "UNKNOWN"
+            );
+
+            updateSensorStatus(
+                temperatureStatusElement,
+                "UNKNOWN"
+            );
+
+
+            updateOverallStatus(
+                "UNKNOWN"
+            );
+
+
+            lastUpdatedElement.textContent =
+                "Connection error";
+
+        }
+
+    }
+
+
+    // ========================================================
+    // INITIAL LOAD
+    // ========================================================
+
+    fetchSensorData();
+
+
+    // ========================================================
+    // CONTINUOUS MONITORING
+    // ========================================================
+
+    setInterval(
+        fetchSensorData,
+        2000
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
+```
